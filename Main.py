@@ -1,13 +1,15 @@
 import pygame
 import math
 
+from model import Personagem
+
 #personagem
 paraX = 200
 paraY = 533
 
 chao = 590
 altura = 57
-pulo = 40
+pulo = 50
 
 paraCima = False
 paraBaixo = False
@@ -19,25 +21,19 @@ white = (255,255,255)
 black = (0,0,0)
 red = (255,0,0)
 FPS = 30
-def jump(yPosition):
-	if math.fabs(yPosition + altura - chao) <= pulo:
-		yPosition -= 1
-		gameDisplay.blit(img, (paraX, yPosition))
-		#if yPosition + altura <= chao:
-			#con = -1
-		pygame.display.update()	
-		
 
-	
+                
+
 gameDisplay = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Slither")
 #pygame.display.flip()
 
 clock = pygame.time.Clock()
 
-playerImg = pygame.image.load('player.png')
-playerImgParado = pygame.image.load('player.gif')
-img = playerImg
+#altura, pulo, paraX, paraY
+player = Personagem(57, 50, 200, 533)
+#playerImg = pygame.image.load('player.png')
+img = player.getImage()
 gameExit = False
 
 global direction
@@ -56,18 +52,14 @@ while not gameExit:
 				direction = 'esquerda'
 				paraEsquerda = True
 				posicoes = 2
-				img = pygame.transform.flip(playerImg, True, False)
+				img = pygame.transform.flip(player.getImage(), True, False)
 			if event.key == pygame.K_RIGHT:
 				direction = 'direita'
-				img = playerImg
+				img = player.getImage()
 				posicoes = 1
 				paraDireita = True
 			if event.key == pygame.K_UP:
 				jump = True
-				#jump(paraY)
-				#paraCima = True
-			#if event.key == pygame.K_DOWN:
-				#paraBaixo = True
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_LEFT:
 				direction = 'parado'
@@ -75,22 +67,24 @@ while not gameExit:
 			if event.key == pygame.K_RIGHT:
 				direction = 'parado'
 				paraDireita = False
-			#if event.key == pygame.K_DOWN:
-				#paraBaixo = False
 	if jump:
-		if not gravidade and math.fabs(paraY + altura - chao) <= pulo:
-			paraY -= 2
+		if not gravidade and math.fabs(player.getPositionY() + player.getAltura() - chao) <= player.getPulo():
+			player.setPositionY(-3)
+			#paraY -= 3
 		else:
 			gravidade = True
-			if paraY + altura - chao <= 0:
-				paraY += 1
+			if player.getPositionY() + player.getAltura() - chao <= 0:
+				player.setPositionY(2)
+				#paraY += 2
 			else:
 				jump = False
 				gravidade = False	
 	if paraDireita:
-		paraX +=3
+		player.setPositionX(3)
+		#paraX +=3
 	if paraEsquerda:
-		paraX -=3
+		player.setPositionX(-3)
+		#paraX -=3
 	
 
 	#if direction == 'parado':
@@ -106,7 +100,7 @@ while not gameExit:
 		
 	gameDisplay.fill(white)
 	pygame.draw.rect(gameDisplay, black, [0,chao,800,20])
-	gameDisplay.blit(img, (paraX, paraY))
+	gameDisplay.blit(img, (player.getPositionX(), player.getPositionY()))
 	#pygame.draw.rect(gameDisplay, red, [,paraY, 10, 10])
 	pygame.display.update()
 	clock.tick(FPS)

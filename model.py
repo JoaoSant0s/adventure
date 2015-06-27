@@ -1,32 +1,60 @@
+__author__ = 'Joao'
+
 import pygame
 
-class Personagem(object):
-	
-	def __init__(self, altura, pulo, paraX, paraY):
-		self.altura = altura
-		self.pulo = pulo
-		self.paraX = paraX
-		self.paraY = paraY
-		self.playerImg = pygame.image.load('player.png')
-		
-	def getAltura(self):
-		return self.altura
+class Link(object):
+    def __init__(self, largura, altura, para_x, para_y):
+        self.largura = largura
+        self.altura = altura
+        self.para_x = para_x
+        self.para_y = para_y
 
-	def getPulo(self):
-		return self.pulo
+    def get_altura(self):
+        return self.altura
 
-	def setPositionX(self, adicionalValueX):
-		self.paraX = self.paraX + adicionalValueX
+    def get_largura(self):
+        return self.largura
 
-	def setPositionY(self, adicionalValueY):
-		self.paraY = self.paraY + adicionalValueY
+    def set_position_x(self, adicional_value_x):
+        self.para_x = self.para_x + adicional_value_x
 
-	def getPositionX(self):
-		return self.paraX
+    def set_position_y(self, adicional_value_y):
+        self.para_y = self.para_y + adicional_value_y
 
-	def getPositionY(self):
-		return self.paraY
+    def get_position_x(self):
+        return self.para_x
 
-	def getImage(self):
-		return self.playerImg
-		
+    def get_position_y(self):
+        return self.para_y
+
+    def move(self):
+        pygame.event.pump()
+        key = pygame.key.get_pressed()
+        self.set_position_x(3 * (key[pygame.K_RIGHT] - key[pygame.K_LEFT]))
+        self.set_position_y(3 * (key[pygame.K_DOWN] - key[pygame.K_UP]))
+
+
+class Inimigo(object):
+    def __init__(self, largura, altura,  para_x, para_y):
+        self.largura = largura
+        self.altura = altura
+        self.para_x = para_x
+        self.para_y = para_y
+
+    def get_altura(self):
+        return self.altura
+
+    def get_largura(self):
+        return self.largura
+
+    def set_position_x(self, adicional_value_x):
+        self.para_x = self.para_x + adicional_value_x
+
+    def set_position_y(self, adicional_value_y):
+        self.para_y = self.para_y + adicional_value_y
+
+    def get_position_x(self):
+        return self.para_x
+
+    def get_position_y(self):
+        return self.para_y
